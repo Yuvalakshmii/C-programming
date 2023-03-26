@@ -1,4 +1,4 @@
-//dont forget --  push(), pop(),prio(),main()
+//dont forget --  push(), pop(),prio(),main(),else if with right indendation, int prio(char x) {if(x==')') return 0};
 //(a-b)*c
 // c*)b-a(
 //s[ *)-(
@@ -30,7 +30,7 @@ char pop()
 
 int prio(char x)
 {
-    if(x=='(') {
+    if(x==')' || x=='\0') {
         return 0;
     }
     else if(x=='+' || x=='-') {
@@ -48,29 +48,35 @@ int main()
 {
     char re[100], pe[100];
     char p;
-    int i=0;
+    int t=-1;
     printf("exp: ");
     scanf("%s",re);
     int l=strlen(re);
     for(int i=l-1; i>=0; i--) {
         if(isalnum(re[i])) {
-            pe[++top]=re[i];
-        } else if(re[i]==')') {
+            pe[++t]=re[i];
+        } 
+        else if(re[i]==')') {
             push(re[i]);
-        } else if(re[i]=='(') {
+        } 
+        else if(re[i]=='(') {
             while((p=pop())!=')') {
-                pe[++top]=p;
+                pe[++t]=p;
             }
-        } else if(prio(s[top])>prio(re[i])) {
-            pe[++top]=pop();
-        } else {
+        } 
+        else {
+            while(prio(s[top])>prio(re[i])) {
+            pe[++t]=pop();
+        } 
             push(re[i]);
-        }
+        
+         }
     }
     while(top!=-1) {
-        pe[++top]=pop();
+        pe[++t]=pop();
     }
-    for(int i=l-1; i>=0; i--){
-        printf("%c",pe[i]);
+    for(int i=(strlen(pe))-1; i>=0; i--){
+        printf("%c ",pe[i]);
     }
 }
+
