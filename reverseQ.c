@@ -1,68 +1,55 @@
-output:
-// Queue: 5  10  15  20  25 
-// Queue After Dequeue: 25  20  15  10  5 
-  
+/* 
+s [3 4 1 6 7 8]
+ns [8 7 6 1 4 3]
+*/
 #include <stdio.h>
-#include <stdlib.h>
+#define max 100
+int s[max],ns[max];
+int top=-1,i,t=-1;
 
-#define N 20			//defining the size of queue
-
-int s[N], top = -1;
-
-int pop ()				//function to remove an element from stack
-{
- // return s[top--];
- printf(" %d ",s[top]);
- top--;
-}
-
-void push (int x)			//function to insert an element into stack
-{
-  if (top == N - 1)
-    printf ("Stack is Full");
-  else
-    {
-      s[++top]=x;
+void push(int x){
+    if(top==max-1){
+        printf("overflow");
+    }
+    else{
+        s[++top]=x;
     }
 }
-
-void enqueue (int x)		
-{
-  push (x);
+void pop(){
+    if(top==-1){
+        printf("underflow");
+    }
+    else {
+        while(top!=-1){
+        ns[++t]=s[top--];
+    }
+    }
 }
-
-void display ()			//function to print elements of a queue
+void enqueue(int x1){
+    push(x1);
+}
+void dequeue(){
+    pop();
+}
+void display()	
 {
-  int i;
   for (i = 0; i <= top; i++)
     printf (" %d ", s[i]);
 }
 
-int dequeue ()		
-{
-  int data, res;
-  if (top == -1)
-    printf ("Queue is Empty");
-  else if (top == 0)
-    return pop ();
-  data = pop ();
-  res = dequeue ();
-  push (data);
-  return res;
-
-}
-
-int main ()
-{
-  enqueue (5);
-  enqueue (10);
-  enqueue (15);
-  enqueue (20);
-  enqueue (25);
-  printf ("Queue:");
-  display ();
-  printf ("\nQueue After Dequeue:");
-  dequeue ();
- // display ();
+int main(){
+  enqueue(5);
+  enqueue(10);
+  enqueue(15);
+  enqueue(20);
+  enqueue(25);
+  enqueue(75);
+  printf ("Queue after enqueue:");
+  display();
+  printf ("\n REVERSED Q:");
+  dequeue();
+  for(i=0;i<=t;i++){
+        printf(" %d ",ns[i]);
+    }
 }
     
