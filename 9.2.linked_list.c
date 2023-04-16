@@ -3,11 +3,11 @@
 2.print data
 3.insert
 4.delete
-5.update
+
 */
 
 
-// this is by creating pointers 
+// this is by creating each pointer for each node 
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -203,6 +203,76 @@ int main()
     count_nodes(head);
 
 
+}
+
+
+//this is by getting input from user and printing list with no of nodes
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *link;
+};
+
+void printdata(struct node *head)
+{
+    struct node *pt=NULL;
+    pt=head;
+    printf("elements in linked list is: ");
+    while(pt != NULL) {
+        printf("%4d",pt->data);
+        pt = pt->link;
+    }
+}
+
+void add_end(struct node *head,int d)
+{
+    struct node *ptr;
+    struct node *temp;
+    ptr=head;
+    temp=malloc(sizeof(struct node));
+    temp->data=d;
+    temp->link=NULL;
+
+    while(ptr->link!=NULL) {
+        ptr=ptr->link;
+    }
+    ptr->link=temp;
+}
+
+void cou(struct node *head){
+    int cou=0;
+    struct node *ptr=NULL;
+    ptr=head;
+    while(ptr!=NULL){
+        cou++;
+        ptr=ptr->link;
+    }
+    printf("\nno of nodes: %d",cou);
+}
+
+int main()
+{
+    int a[100];
+    int n;
+    printf("how many elements: ");
+    scanf("%d",&n);
+    printf("enter elements:-\n ");
+
+    for(int i=0; i<n; i++) {
+        printf("%d :",i);
+        scanf("%d",&a[i]);
+    }
+
+    struct node *head=(struct node*)malloc(sizeof(struct node));
+    head->data=a[0];
+    head->link=NULL;
+    for(int i=1; i<n; i++) {
+        add_end(head,a[i]);
+    }
+    printdata(head);
+    cou(head);
 }
 
 
