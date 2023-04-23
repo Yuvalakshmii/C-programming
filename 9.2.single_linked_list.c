@@ -1,3 +1,4 @@
+280 MAIN PROGRAM
 /*
 1.count_of_nodes
 2.print data
@@ -277,7 +278,162 @@ int main()
 
 
 
+//COMPLETE PROGRAM 
 
+// 2 4 5 8
+// delete 3rd pos
+// insert 6 at 3rd pos
+// add one at front
+// del one at front
+// del 8 at end
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *link;
+};
+
+void delbyvalue(struct node **head,int val)
+{
+    struct node *prev,*curr;
+    prev=*head;
+    curr=*head;
+    if(curr->data==val){
+        *head=curr->link;
+        free(curr);
+        curr=NULL;
+    }
+    else{
+        while(curr->data!=val){
+        prev=curr;
+        curr=curr->link;
+         }           
+        prev->link=curr->link;
+        free(curr);
+        curr=NULL;
+
+    }
+}
+
+void delete_by_pos(struct node **head,int pos)
+{
+    struct node *prev,*curr;
+    prev=*head;
+    curr=*head;
+    if(pos==1) {
+        *head=curr->link;
+        free(curr);
+        curr=NULL;
+    } else {
+        while(pos!=1) {
+            prev=curr;
+            curr=curr->link;
+            pos--;
+        }
+        prev->link=curr->link;
+        free(curr);
+        curr=NULL;
+    }
+}
+
+void delend(struct node *head){
+    struct node *prev,*curr;
+    prev=head;
+    curr=head;
+    while(curr->link!=NULL){
+        prev=curr;
+        curr=curr->link;
+    }
+    prev->link=NULL;
+    free(curr);
+    curr=NULL;
+    
+    
+}
+
+void add_at_pos(struct node *head,int data,int pos)
+{
+    struct node *ptr;
+    struct node *temp;
+    ptr=head;
+    temp=(struct node*)malloc(sizeof(struct node));
+    temp->data=data;
+    temp->link=NULL;
+
+    while(pos>2) {
+        ptr=ptr->link;
+        pos--;
+    }
+    temp->link=ptr->link;
+    ptr->link=temp;
+
+}
+
+void add_end(struct node *head,int data)
+{
+    struct node *ptr;
+    struct node *temp;
+    ptr=head;
+    temp=(struct node*)malloc(sizeof(struct node));
+    temp->data=data;
+    temp->link=NULL;
+
+    while(ptr->link !=NULL) {
+        ptr=ptr->link;
+    }
+    ptr->link=temp;
+}
+
+void print_list(struct node *head)
+{
+    struct node *ptr=NULL;
+    ptr=head;
+    printf("\n");
+    while(ptr!=NULL) {
+        printf("%d   ",ptr->data);
+        ptr=ptr->link;
+    }
+}
+
+void add_begin(struct node **head,int data)
+{
+    struct node *temp;
+    temp=(struct node*)malloc(sizeof(struct node));
+    temp->data=data;
+    temp->link=NULL;
+    temp->link=*head;
+    *head=temp;
+
+}
+
+int main()
+{
+    struct node *head=malloc(sizeof(struct node));
+    head->data=2;
+    head->link=NULL;
+
+    add_end(head,4);
+    add_end(head,5);
+    add_end(head,8);
+    printf("created list: ");
+    print_list(head);
+    delete_by_pos(&head,3);
+    printf("\ndeleted element at pos 3: ");
+    print_list(head);
+    add_at_pos(head,6,3);
+    printf("\ninserted 6 to list: ");
+    print_list(head);
+    add_begin(&head,1);
+    printf("\nadded one at beg of list: ");
+    print_list(head);
+    delbyvalue(&head,1);
+    printf("\nafter deleting value 1");
+    print_list(head);
+    delend(head);
+    printf("\ndelete element at end");
+    print_list(head);
+}
 
 
 
