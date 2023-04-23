@@ -1,7 +1,28 @@
-// 2 4 5 8
-// delete 5
-// insert 6,3
+OUTPUT:
+circular single list: 
+2   4   5   8   
+added one at beg of list: 
+1   2   4   5   8   
+add 6 at 3rd pos to list: 
+1   2   6   4   5   8   
 
+no of nodes: 4
+
+deleted element at pos 3: 
+1   2   4   5   8   
+delete element at front: 
+2   4   5   8   
+delete element at end: 
+2   4   5   
+delete element 4: 
+2   5   
+
+yes!,found 5 in linked list
+
+
+---------------------------------------
+CODE:-
+    
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,13 +31,30 @@ struct node {
     struct node *link;
 };
 
-void delete_this(struct node **head,int pos)
+void delval(struct node *tail,int val)
 {
     struct node *prev,*curr;
-    prev=*head;
-    curr=*head;
+    prev=tail->link;
+    curr=tail->link;
+    if(curr->data==val) {
+        tail->link=curr->link;
+    } else {
+        while(curr->data!=val) {
+            prev=curr;
+            curr=curr->link;
+        }
+        prev->link=curr->link;
+
+    }
+}
+
+void delete_by_pos(struct node *tail,int pos)
+{
+    struct node *prev,*curr;
+    prev=tail->link;
+    curr=tail->link;
     if(pos==1) {
-        *head=curr->link;
+        tail->link=curr->link;
         free(curr);
         curr=NULL;
     } else {
@@ -31,11 +69,22 @@ void delete_this(struct node **head,int pos)
     }
 }
 
-void insert_any(struct node *head,int data,int pos)
+void delend(struct node *tail)
+{
+    struct node *curr;
+    curr=tail->link;
+    while(curr->link!=tail) {
+        curr=curr->link;
+    }
+    curr->link=tail->link;
+
+}
+
+void add_at_pos(struct node *tail,int data,int pos)
 {
     struct node *ptr;
     struct node *temp;
-    ptr=head;
+    ptr=tail->link;
     temp=(struct node*)malloc(sizeof(struct node));
     temp->data=data;
     temp->link=NULL;
@@ -49,75 +98,103 @@ void insert_any(struct node *head,int data,int pos)
 
 }
 
-void add_end(struct node *head,int data)
+struct node* addend(struct node* tail,int data)
 {
-    struct node *ptr;
+
     struct node *temp;
-    ptr=head;
     temp=(struct node*)malloc(sizeof(struct node));
     temp->data=data;
-    temp->link=NULL;
+    temp->link=tail->link;
+    tail->link=temp;
 
-    while(ptr->link !=NULL) {
-        ptr=ptr->link;
-    }
-    ptr->link=temp;
+    return temp;
 }
-void print_list(struct node *head)
+
+void add_begin(struct node *tail,int data)
 {
-    struct node *ptr=NULL;
-    ptr=head;
+    struct node *temp;
+    temp=(struct node*)malloc(sizeof(struct node));
+    temp->data=data;
+    temp->link=tail->link;
+    tail->link=temp;
+
+}
+
+void print_list(struct node *tail)
+{
+    struct node *ptr=tail->link;
     printf("\n");
-    while(ptr!=NULL) {
+    do {
         printf("%d   ",ptr->data);
         ptr=ptr->link;
-    }
+    } while(ptr!=tail->link);
 }
 
-void add_begin(struct node **head,int data)
+void count_nodes(struct node *tail)
 {
-    struct node *temp;
-    temp=(struct node*)malloc(sizeof(struct node));
-    temp->data=data;
-    temp->link=NULL;
-    temp->link=*head;
-    *head=temp;
-    
+    int n=0;
+    struct node *ptr=tail->link;
+    do {
+        n++;
+        ptr=ptr->link;
+    } while(ptr->link!=tail);
+    printf("\n\nno of nodes: %d\n",n);
 }
 
-//CIRCULAR SINGLY LINKED LIST
+void search_ele(struct node *tail,int data)
+{
 
-void abics(struct node *head,int data){
-    struct node *temp;
-    temp=(struct node*)malloc(sizeof(struct node));
-    temp->data=data;
-    temp->link=NULL;
-    
+    struct node *curr;
+    curr=tail->link;
+    if(curr->data==data) {
+        printf("\nyes!,found %d at position 1",data);
+    } 
+    else{
+        while(curr->data!=data) {
+            curr=curr->link;
+        }
+        if(curr->data=data){
+        printf("\n\nyes!,found %d in linked list",data);
+    }
+        else{
+            printf("no!");
+        }
+
 }
-
+}
 
 int main()
 {
-    struct node *head=malloc(sizeof(struct node));
-    head->data=2;
-    head->link=head;
+    int n=0;
+    struct node *tail=malloc(sizeof(struct node));
+    tail->data=2;
+    tail->link=tail;
 
-    add_end(head,4);
-    add_end(head,5);
-    add_end(head,8);
-    printf("created list: ");
-    print_list(head);
-    delete_this(&head,3);
-     printf("deleted list: ");
-    print_list(head);
-    insert_any(head,6,3);
-     printf("inserted 6 to list: ");
-    print_list(head);
-    add_begin(&head,1);
-     printf("added one at beg of list: ");
-    print_list(head);
-    abics(head,0);
-     printf("circular single list: ");
-    print_list(head);
-
+    tail=addend(tail,4);
+    tail=addend(tail,5);
+    tail=addend(tail,8);
+    printf("circular single list: ");
+    print_list(tail);
+    add_begin(tail,1);
+    printf("\nadded one at beg of list: ");
+    print_list(tail);
+    add_at_pos(tail,6,3);
+    printf("\nadd 6 at 3rd pos to list: ");
+    print_list(tail);
+    
+    count_nodes(tail);
+    
+    delete_by_pos(tail,3);
+    printf("\ndeleted element at pos 3: ");
+    print_list(tail);
+    delete_by_pos(tail,1);
+    printf("\ndelete element at front: ");
+    print_list(tail);
+    delend(tail);
+    printf("\ndelete element at end: ");
+    print_list(tail);
+    delval(tail,4);
+    printf("\ndelete element 4: ");
+    print_list(tail);
+    search_ele(tail,5);
 }
